@@ -39,4 +39,38 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         return response()->json($product);
     }
+
+    public function receive($id, Request $request)
+    {
+        $request->validate(['quantity' => 'required|integer|min:1']);
+
+        $product = Product::findOrFail($id);
+        $product->quantity += $request->quantity;
+        $product->save();
+
+        return response()->json([
+            'message' => 'Product quantity increased successfully.',
+            'product' => $product,
+        ]);
+    }
+
+    public function deduct($id, Request $request)
+    {
+        $request->validate(['quantity' => 'required|integer|min:1']);
+
+        $product = Product::findOrFail($id);
+
+        if ($product->quantity < $request->quantity) {
+            return response()->json(['error' => 'Not enough stock to deduct.'], 400);
+        }
+
+        $product->quantity -= $request->quantity;
+        $product->save();
+
+        return response()->json([
+            'message' => 'Product quantity deducted successfully.',
+            'product' => $product,
+        ]);
+    }
+
 }
