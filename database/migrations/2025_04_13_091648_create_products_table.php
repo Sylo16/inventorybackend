@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,7 @@ class CreateProductsTable extends Migration
             $table->integer('quantity');
             $table->string('unit_of_measurement');
             $table->string('category')->nullable();
+            $table->boolean('hidden')->default(false); // Moved here for clarity
             $table->timestamps();
         });
     }

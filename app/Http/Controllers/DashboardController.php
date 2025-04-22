@@ -33,7 +33,6 @@ class DashboardController extends Controller
             'revenue_trend' => $stat->revenue_trend ?? 'N/A',
             'total_items' => $stat->total_items ?? 0,
             'total_categories' => $stat->total_categories ?? 0,
-            'total_suppliers' => $stat->total_suppliers ?? 0,
             'inventory_trend' => $stat->inventory_trend ?? 'N/A',
             'critical_alerts' => $stat->critical_alerts ?? 0,
             'low_stock' => $stat->low_stock ?? 0,

@@ -29,7 +29,6 @@ return new class extends Migration
             // Inventory Stats
             $table->unsignedBigInteger('total_items')->default(0);
             $table->unsignedInteger('total_categories')->default(0);
-            $table->unsignedInteger('total_suppliers')->default(0);
             $table->string('inventory_trend')->nullable();
     
             // Critical Alerts

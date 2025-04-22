@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
+    // Create new product
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -28,18 +28,22 @@ class ProductController extends Controller
         ], 201);
     }
 
-    public function index()
+    // List all products (even hidden ones)
+    public function index(Request $request)
     {
-        return response()->json(Product::all());
-    }
-    
+        $products = Product::all(); // Get all products including hidden ones
 
+        return response()->json($products);
+    }
+
+    // Show a specific product
     public function show($id)
     {
         $product = Product::findOrFail($id);
         return response()->json($product);
     }
 
+    // Receive stock
     public function receive($id, Request $request)
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
@@ -54,6 +58,7 @@ class ProductController extends Controller
         ]);
     }
 
+    // Deduct stock
     public function deduct($id, Request $request)
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
@@ -73,4 +78,27 @@ class ProductController extends Controller
         ]);
     }
 
+    // Hide product (mark as hidden, but keep it in the list)
+    public function hideProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->hidden = true;  // Mark as hidden, but don't remove from the list
+        $product->save();
+
+        return response()->json([
+            'message' => 'Product marked as hidden successfully.',
+            'product' => $product,
+        ]);
+    }
+
+    // Unhide product
+    public function unhideProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->hidden = false;  // Mark as visible again
+        $product->save();
+
+        return response()->json(['message' => 'Product unhidden successfully']);
+    }
 }
+

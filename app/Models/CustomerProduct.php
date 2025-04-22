@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DamagedProduct extends Model
+class CustomerProduct extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'customer_name',
+        'customer_id',
         'product_name',
+        'category',
+        'unit',
         'quantity',
-        'reason',
-        'date',
-        'unit_of_measurement',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

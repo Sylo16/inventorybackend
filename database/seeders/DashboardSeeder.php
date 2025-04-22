@@ -27,7 +27,7 @@ class DashboardSeeder extends Seeder
             'total_sales' => 150000,
             'today_sales' => 20000,
             'month_sales' => 80000,
-            'sales_trend' => '↑ 15%',
+            'sales_trend' => '↑ 15%', 
 
             'total_revenue' => 120000,
             'gross_revenue' => 130000,
@@ -36,7 +36,6 @@ class DashboardSeeder extends Seeder
 
             'total_items' => 540,
             'total_categories' => 8,
-            'total_suppliers' => 4,
             'inventory_trend' => '↑ 5%',
 
             'critical_alerts' => 3,

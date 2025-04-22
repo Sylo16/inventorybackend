@@ -17,6 +17,6 @@ class Product extends Model
         'quantity',
         'unit_of_measurement',
         'category',
+        'hidden',
     ];
 }
-
