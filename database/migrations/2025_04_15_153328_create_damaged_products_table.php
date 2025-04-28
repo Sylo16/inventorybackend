@@ -14,7 +14,7 @@ class CreateDamagedProductsTable extends Migration
         $table->integer('quantity');
         $table->string('reason');
         $table->date('date');
-        $table->string('unit_of_measurement'); // Add unit_of_measurement column
+        $table->string('unit_of_measurement'); 
         $table->timestamps();
     });
 }

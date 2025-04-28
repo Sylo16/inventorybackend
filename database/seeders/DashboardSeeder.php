@@ -8,7 +8,6 @@ use App\Models\CategorySale;
 use App\Models\SalesData;
 use App\Models\TopSellingProduct;
 use App\Models\RecentUpdate;
-use App\Models\Inventory;
 
 class DashboardSeeder extends Seeder
 {
@@ -20,7 +19,6 @@ class DashboardSeeder extends Seeder
         CategorySale::truncate();
         TopSellingProduct::truncate();
         RecentUpdate::truncate();
-        Inventory::truncate();
 
         // Seed Stat model
         Stat::create([
@@ -106,10 +104,5 @@ class DashboardSeeder extends Seeder
             'action' => 'Stock updated'
         ]);
 
-        // Seed Inventory model
-        Inventory::create([
-            'product_name' => 'Portland Cement (40kg)',
-            'quantity' => 1000,
-        ]);
     }
 }

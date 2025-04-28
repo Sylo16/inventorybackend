@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
     public function up()
     {
         Schema::create('stats', function (Blueprint $table) {
@@ -26,11 +24,6 @@ return new class extends Migration
             $table->unsignedBigInteger('net_revenue')->default(0);
             $table->string('revenue_trend')->nullable();
     
-            // Inventory Stats
-            $table->unsignedBigInteger('total_items')->default(0);
-            $table->unsignedInteger('total_categories')->default(0);
-            $table->string('inventory_trend')->nullable();
-    
             // Critical Alerts
             $table->unsignedInteger('critical_alerts')->default(0);
             $table->unsignedInteger('low_stock')->default(0);
@@ -41,11 +34,8 @@ return new class extends Migration
         });
     
     
-}
+    }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('stats');

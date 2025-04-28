@@ -51,4 +51,5 @@ class CustomerController extends Controller
         // Return the newly created customer with their products
         return response()->json($customer->load('products'), 201);
     }
+    
 }

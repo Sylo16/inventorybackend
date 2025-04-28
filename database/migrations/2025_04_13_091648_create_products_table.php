@@ -12,12 +12,11 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('sku')->unique();
-            $table->text('description')->nullable();
             $table->decimal('unit_price', 10, 2);
             $table->integer('quantity');
             $table->string('unit_of_measurement');
             $table->string('category')->nullable();
-            $table->boolean('hidden')->default(false); // Moved here for clarity
+            $table->boolean('hidden')->default(false);
             $table->timestamps();
         });
     }

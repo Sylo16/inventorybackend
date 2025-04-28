@@ -6,9 +6,7 @@
 
     return new class extends Migration
     {
-        /**
-         * Run the migrations.
-         */
+        
         public function up()
 {
     Schema::create('top_selling_products', function (Blueprint $table) {
@@ -22,9 +20,7 @@
 }
 
 
-        /**
-         * Reverse the migrations.
-         */
+        
         public function down(): void
         {
             Schema::dropIfExists('top_selling_products');
