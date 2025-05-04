@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -10,7 +11,8 @@ use App\Http\Controllers\ReportController;
 
 
 //Dashboard
-Route::get('/dashboard-data', [DashboardController::class, 'index']);
+Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
+
 
 //Login
 Route::post('/login', [AuthController::class, 'login']);
@@ -27,17 +29,22 @@ Route::post('/products/{id}/unhide', [ProductController::class, 'unhideProduct']
 Route::put('/products/{id}', [ProductController::class, 'update']);
 Route::apiResource('products', ProductController::class);
 
+
 //Damaged Products
 Route::get('/damaged-products', [DamagedProductController::class, 'index']);
 Route::post('/damaged-products', [DamagedProductController::class, 'store']);
+Route::get('/damaged-products/stats', [DamagedProductController::class, 'stats']);
 
 //PurchasedList
 Route::prefix('customers')->group(function () {
-    Route::get('/', [CustomerController::class, 'index']);
-    Route::post('/', [CustomerController::class, 'store']);
+Route::get('/', [CustomerController::class, 'index']);
+Route::post('/', [CustomerController::class, 'store']);
+
 });
 
-Route::get('/reports', [ReportController::class, 'index']);
+//Reports
+Route::get('/reports/top-selling', [ReportController::class, 'topSellingProducts']);
+
 
 
 Route::get('/test-cors', function () {

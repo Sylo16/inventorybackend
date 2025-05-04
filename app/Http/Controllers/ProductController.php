@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Deduction;
 
 class ProductController extends Controller
 {
@@ -111,6 +112,34 @@ class ProductController extends Controller
 
         return response()->json(['product' => $product]);
     }
+
+    public function deducted($productName, Request $request)
+{
+    $product = Product::where('name', $productName)->first();
+
+    if (!$product) {
+        return response()->json(['message' => 'Product not found'], 404);
+    }
+
+    $validated = $request->validate([
+        'quantity' => 'required|integer|min:1'
+    ]);
+
+    if ($product->quantity < $validated['quantity']) {
+        return response()->json(['message' => 'Not enough stock'], 400);
+    }
+
+    $product->quantity -= $validated['quantity'];
+    $product->save();
+
+    // Log deduction
+    Deduction::create([
+        'product_id' => $product->id,
+        'quantity' => $validated['quantity'],
+    ]);
+
+    return response()->json(['message' => 'Product quantity deducted successfully'], 200);
+}
 
 }
 

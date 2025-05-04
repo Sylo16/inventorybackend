@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TopSellingProduct extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'sales', 'quantity', 'trend'];
 }

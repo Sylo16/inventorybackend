@@ -27,7 +27,18 @@ class DamagedProductController extends Controller
     ], 201);
 }
 
-    // Retrieve all damaged product records
+    public function stats()
+        {
+            $total = DamagedProduct::sum('quantity');
+            $recent = DamagedProduct::orderBy('date', 'desc')
+                ->limit(5)
+                ->get();
+
+            return response()->json([
+                'total_damaged' => $total,
+                'recent_damages' => $recent
+            ]);
+        }
    
 
     public function index()

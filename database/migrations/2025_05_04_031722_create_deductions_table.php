@@ -9,22 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('sales_data', function (Blueprint $table) {
+        Schema::create('deductions', function (Blueprint $table) {
             $table->id();
-            $table->string('month');
-            $table->integer('sales');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
             $table->timestamps();
         });
+        
     }
-    
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales_data');
+        Schema::dropIfExists('deductions');
     }
 };

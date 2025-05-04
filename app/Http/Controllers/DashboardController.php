@@ -3,51 +3,77 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Stat;
-use App\Models\CategorySale;
-use App\Models\SalesData;
-use App\Models\TopSellingProduct;
-use App\Models\RecentUpdate;
-use App\Models\Inventory;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function getDashboardData()
     {
-        $stat = Stat::first(); // Assuming there's only one record in the Stat table
-
-        // Fetch sales data, revenue, inventory, and alerts
-        $totalSales = SalesData::sum('sales');
-        $totalRevenue = TopSellingProduct::sum('sales');
-        $totalInventory = Inventory::sum('quantity');
-        $criticalAlerts = RecentUpdate::where('is_critical', true)->count();
-
+        $today = Carbon::today();
+        $monthStart = Carbon::now()->startOfMonth();
+        
+        // Total Sales Calculations
+        $totalSales = DB::table('sales')->sum('amount');
+        $todaySales = DB::table('sales')
+            ->whereDate('sale_date', $today)
+            ->sum('amount');
+        $monthSales = DB::table('sales')
+            ->whereBetween('sale_date', [$monthStart, $today])
+            ->sum('amount');
+            
+        // Inventory Stats
+        $totalItems = DB::table('products')->sum('quantity');
+        $totalCategories = DB::table('products')
+            ->distinct('category')
+            ->count('category');
+            
+        // Critical Alerts
+        $lowStock = DB::table('products')
+            ->where('quantity', '<', 10)
+            ->where('quantity', '>', 0)
+            ->count();
+        $outOfStock = DB::table('products')
+            ->where('quantity', '<=', 0)
+            ->count();
+        $criticalAlerts = $lowStock + $outOfStock;
+        
+        // Recent Updates
+        $recentUpdates = DB::table('recent_updates')
+            ->select('update_text', 'time', 'priority', 'action', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+            
+        // Top Selling Products
+        $topSellingProducts = DB::table('top_selling_products')
+            ->orderBy('sales', 'desc')
+            ->limit(5)
+            ->get();
+            
+        // Calculate trends (simplified example)
+        $yesterdaySales = DB::table('sales')
+            ->whereDate('sale_date', $today->subDay())
+            ->sum('amount');
+        $salesTrend = $todaySales > $yesterdaySales ? '↑ 5%' : '↓ 2%';
+            
         return response()->json([
-            'total_sales' => $stat->total_sales ?? 0,
-            'today_sales' => $stat->today_sales ?? 0,
-            'month_sales' => $stat->month_sales ?? 0,
-            'sales_trend' => $stat->sales_trend ?? 'N/A',
-            'total_revenue' => $stat->total_revenue ?? 0,
-            'gross_revenue' => $stat->gross_revenue ?? 0,
-            'net_revenue' => $stat->net_revenue ?? 0,
-            'revenue_trend' => $stat->revenue_trend ?? 'N/A',
-            'total_items' => $stat->total_items ?? 0,
-            'total_categories' => $stat->total_categories ?? 0,
-            'inventory_trend' => $stat->inventory_trend ?? 'N/A',
-            'critical_alerts' => $stat->critical_alerts ?? 0,
-            'low_stock' => $stat->low_stock ?? 0,
-            'out_of_stock' => $stat->out_of_stock ?? 0,
-            'alert_trend' => $stat->alert_trend ?? 'N/A',
-
-            'total_sales_from_data' => $totalSales,
-            'total_revenue_from_products' => $totalRevenue,
-            'inventory_quantity' => $totalInventory,
-            'critical_alerts_count' => $criticalAlerts,
-
-            'sales_chart' => SalesData::orderBy('id')->get(),
-            'category_sales' => CategorySale::all(),
-            'top_selling_products' => TopSellingProduct::all(),
-            'recent_updates' => RecentUpdate::latest()->take(5)->get(),
+            'total_sales' => $totalSales,
+            'today_sales' => $todaySales,
+            'month_sales' => $monthSales,
+            'total_revenue' => $totalSales, // Using same as total sales for simplicity
+            'gross_revenue' => $totalSales, // Using same as total sales for simplicity
+            'total_items' => $totalItems,
+            'total_categories' => $totalCategories,
+            'low_stock' => $lowStock,
+            'out_of_stock' => $outOfStock,
+            'critical_alerts' => $criticalAlerts,
+            'sales_trend' => $salesTrend,
+            'revenue_trend' => $salesTrend, // Same as sales trend for simplicity
+            'inventory_trend' => '→ 0%', // Static for now
+            'alert_trend' => $criticalAlerts > 0 ? '↑ ' . $criticalAlerts : '→ 0',
+            'top_selling_products' => $topSellingProducts,
+            'recent_updates' => $recentUpdates
         ]);
     }
 }
