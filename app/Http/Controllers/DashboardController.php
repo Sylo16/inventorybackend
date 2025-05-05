@@ -28,16 +28,24 @@ class DashboardController extends Controller
             ->distinct('category')
             ->count('category');
             
-        // Critical Alerts
+       // Critical Alerts
         $lowStock = DB::table('products')
-            ->where('quantity', '<', 10)
+            ->where('quantity', '<', 50)
+            ->where('quantity', '>', 10)
+            ->count();
+
+        // Add this new query for critical stock (you can define what "critical" means - e.g., quantity < 5)
+        $criticalStock = DB::table('products')
+            ->where('quantity', '<', 10)  // Adjust this threshold as needed
             ->where('quantity', '>', 0)
             ->count();
+
         $outOfStock = DB::table('products')
             ->where('quantity', '<=', 0)
             ->count();
-        $criticalAlerts = $lowStock + $outOfStock;
-        
+
+        // Update the total alerts count to include critical stock
+        $criticalAlerts = $lowStock + $outOfStock + $criticalStock;
         // Recent Updates
         $recentUpdates = DB::table('recent_updates')
             ->select('update_text', 'time', 'priority', 'action', 'created_at')
@@ -66,6 +74,7 @@ class DashboardController extends Controller
             'total_items' => $totalItems,
             'total_categories' => $totalCategories,
             'low_stock' => $lowStock,
+            'critical_stock' => $criticalStock,
             'out_of_stock' => $outOfStock,
             'critical_alerts' => $criticalAlerts,
             'sales_trend' => $salesTrend,

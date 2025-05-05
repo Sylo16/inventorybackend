@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 //Dashboard
 Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
 
+Route::get('/sales-analytics', [SalesAnalyticsController::class, 'index']);
 
 //Login
 Route::post('/login', [AuthController::class, 'login']);
