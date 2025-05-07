@@ -9,13 +9,12 @@ return new class extends Migration
     
     public function up()
 {
-    Schema::create('category_sales', function (Blueprint $table) {
+    Schema::create('categories', function (Blueprint $table) {
         $table->id();
-        $table->string('category');
-        $table->integer('sales');
-        $table->string('color')->nullable();
+        $table->string('name');
         $table->timestamps();
     });
+    
 }
 
     public function down(): void

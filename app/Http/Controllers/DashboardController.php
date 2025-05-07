@@ -34,9 +34,9 @@ class DashboardController extends Controller
             ->where('quantity', '>', 10)
             ->count();
 
-        // Add this new query for critical stock (you can define what "critical" means - e.g., quantity < 5)
+       
         $criticalStock = DB::table('products')
-            ->where('quantity', '<', 10)  // Adjust this threshold as needed
+            ->where('quantity', '<', 10)  
             ->where('quantity', '>', 0)
             ->count();
 
@@ -46,19 +46,7 @@ class DashboardController extends Controller
 
         // Update the total alerts count to include critical stock
         $criticalAlerts = $lowStock + $outOfStock + $criticalStock;
-        // Recent Updates
-        $recentUpdates = DB::table('recent_updates')
-            ->select('update_text', 'time', 'priority', 'action', 'created_at')
-            ->orderBy('created_at', 'desc')
-            ->limit(3)
-            ->get();
-            
-        // Top Selling Products
-        $topSellingProducts = DB::table('top_selling_products')
-            ->orderBy('sales', 'desc')
-            ->limit(5)
-            ->get();
-            
+                    
         // Calculate trends (simplified example)
         $yesterdaySales = DB::table('sales')
             ->whereDate('sale_date', $today->subDay())
@@ -81,8 +69,8 @@ class DashboardController extends Controller
             'revenue_trend' => $salesTrend, // Same as sales trend for simplicity
             'inventory_trend' => '→ 0%', // Static for now
             'alert_trend' => $criticalAlerts > 0 ? '↑ ' . $criticalAlerts : '→ 0',
-            'top_selling_products' => $topSellingProducts,
-            'recent_updates' => $recentUpdates
+           
+            
         ]);
     }
 }

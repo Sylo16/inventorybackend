@@ -44,8 +44,7 @@ Route::post('/', [CustomerController::class, 'store']);
 });
 
 //Reports
-Route::get('/reports/top-selling', [ReportController::class, 'topSellingProducts']);
-
+Route::get('/reports', [ReportController::class, 'analytics']);
 
 
 Route::get('/test-cors', function () {
