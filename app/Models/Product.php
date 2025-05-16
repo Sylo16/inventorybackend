@@ -18,4 +18,14 @@ class Product extends Model
         'category',
         'hidden',
     ];
+
+    public function saleItems()
+    {
+        return $this->hasMany(SaleItem::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

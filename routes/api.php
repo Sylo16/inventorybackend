@@ -7,13 +7,13 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DamagedProductController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ReportController;
+
 
 
 //Dashboard
 Route::get('/dashboard-data', [DashboardController::class, 'getDashboardData']);
 
-Route::get('/sales-analytics', [SalesAnalyticsController::class, 'index']);
+
 
 //Login
 Route::post('/login', [AuthController::class, 'login']);
@@ -43,10 +43,9 @@ Route::post('/', [CustomerController::class, 'store']);
 
 });
 
-//Reports
-Route::get('/reports', [ReportController::class, 'analytics']);
 
 
+//Test
 Route::get('/test-cors', function () {
     return response()->json(['message' => 'CORS is working!']);
 });

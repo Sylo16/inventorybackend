@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // Import Log
+use Illuminate\Support\Facades\Log; 
 
 class CustomerController extends Controller
 {
