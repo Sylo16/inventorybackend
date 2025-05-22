@@ -15,6 +15,7 @@ class CustomerProduct extends Model
         'category',
         'unit',
         'quantity',
+        'price',
     ];
 
     public function customer()

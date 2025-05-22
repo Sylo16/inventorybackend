@@ -8,7 +8,7 @@ use App\Models\Deduction;
 
 class ProductController extends Controller
 {
-    // Create new product
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,7 +31,7 @@ class ProductController extends Controller
     // List all products (even hidden ones)
     public function index(Request $request)
     {
-        $products = Product::all(); // Get all products including hidden ones
+        $products = Product::all(); 
 
         return response()->json($products);
     }
@@ -113,33 +113,30 @@ class ProductController extends Controller
         return response()->json(['product' => $product]);
     }
 
-    public function deducted($productName, Request $request)
+    public function deducted(Request $request, $id)
 {
-    $product = Product::where('name', $productName)->first();
+    $request->validate([
+        'quantity' => 'required|integer|min:1',
+    ]);
+
+    $product = Product::find($id);
 
     if (!$product) {
-        return response()->json(['message' => 'Product not found'], 404);
+        return response()->json(['message' => 'Product not found.'], 404);
     }
 
-    $validated = $request->validate([
-        'quantity' => 'required|integer|min:1'
-    ]);
-
-    if ($product->quantity < $validated['quantity']) {
-        return response()->json(['message' => 'Not enough stock'], 400);
+    if ($product->quantity < $request->quantity) {
+        return response()->json(['message' => 'Not enough stock to deduct.'], 400);
     }
 
-    $product->quantity -= $validated['quantity'];
+    $product->quantity -= $request->quantity;
+    $product->updated_at = now();
     $product->save();
 
-    // Log deduction
-    Deduction::create([
-        'product_id' => $product->id,
-        'quantity' => $validated['quantity'],
-    ]);
-
-    return response()->json(['message' => 'Product quantity deducted successfully'], 200);
+    return response()->json(['product' => $product], 200);
 }
+
+
 
 }
 

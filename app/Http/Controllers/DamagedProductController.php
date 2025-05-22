@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\DamagedProduct;
 use Illuminate\Http\Request;
+use App\Models\Notification;
 
 class DamagedProductController extends Controller
 {
-    // Store a newly created damaged product in the database
+
     public function store(Request $request)
 {
     $validated = $request->validate([
@@ -20,6 +21,14 @@ class DamagedProductController extends Controller
     ]);
 
     $damagedProduct = DamagedProduct::create($validated);
+
+     // Create a notification
+    Notification::create([
+        'type' => 'damaged_product_reported',
+        'message' => "Damaged product reported: {$request->product_name} by {$request->customer_name}",
+        'read' => false,
+        'product_id' => null, // Optional: Add if related to a specific product
+    ]);
 
     return response()->json([
         'message' => 'Damaged product recorded successfully!',

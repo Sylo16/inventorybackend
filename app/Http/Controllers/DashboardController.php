@@ -44,6 +44,12 @@ class DashboardController extends Controller
                 ->where('quantity', '<=', 0)
                 ->count();
 
+            
+            // NEW: Calculate in_stock (quantity >= 50)
+            $inStock = DB::table('products')
+                ->where('quantity', '>=', 50)
+                ->count();
+
             $criticalAlerts = $lowStock + $outOfStock + $criticalStock;
                         
             // Calculate trends
@@ -62,6 +68,7 @@ class DashboardController extends Controller
                 'low_stock' => $lowStock,
                 'critical_stock' => $criticalStock,
                 'out_of_stock' => $outOfStock,
+                'in_stock' => $inStock,
                 'critical_alerts' => $criticalAlerts,
                 'sales_trend' => $salesTrend,
                 'inventory_trend' => '→ 0%',
