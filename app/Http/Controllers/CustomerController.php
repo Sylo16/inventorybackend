@@ -80,7 +80,7 @@ class CustomerController extends Controller
             'products.*.category' => 'required|string',
             'products.*.unit' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
-            'products.*.purchase_date' => 'nullable|date',
+            'products.*.purchase_date' => 'required|date',
         ]);
 
         // Remove all previous products (if you want to replace) or just add new ones
