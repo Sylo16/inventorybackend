@@ -15,6 +15,7 @@ class CreateCustomerProductsTable extends Migration
             $table->string('category');
             $table->string('unit');
             $table->integer('quantity');
+            $table->date('purchase_date')->nullable();
             $table->timestamps();
         });
     }

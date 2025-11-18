@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomerProduct extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'customer_id',
         'product_name',
         'category',
         'unit',
         'quantity',
-        'price',
+        'purchase_date', 
+    ];
+
+    protected $casts = [
+        'purchase_date' => 'date',
     ];
 
     public function customer()

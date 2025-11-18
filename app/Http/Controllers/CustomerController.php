@@ -24,13 +24,14 @@ class CustomerController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'phone' => 'required|string|max:15',
+                'phone' => 'nullable|string|max:15',
                 'purchase_date' => 'required|date',
                 'products' => 'required|array',
                 'products.*.product_name' => 'required|string',
                 'products.*.category' => 'required|string',
                 'products.*.unit' => 'required|string',
                 'products.*.quantity' => 'required|integer|min:1',
+                'products.*.purchase_date' => 'nullable|date',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -80,7 +81,7 @@ class CustomerController extends Controller
             'products.*.category' => 'required|string',
             'products.*.unit' => 'required|string',
             'products.*.quantity' => 'required|integer|min:1',
-            'products.*.purchase_date' => 'required|date',
+            'products.*.purchase_date' => 'nullable|date',
         ]);
 
         // Remove all previous products (if you want to replace) or just add new ones
