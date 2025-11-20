@@ -17,6 +17,7 @@ class Product extends Model
         'unit_of_measurement',
         'category',
         'hidden',
+        'image_url',
     ];
 
     public function saleItems()
