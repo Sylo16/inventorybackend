@@ -8,7 +8,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DamagedProductController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\NotificationController;
 
 
@@ -36,6 +35,8 @@ Route::apiResource('products', ProductController::class);
 Route::get('/damaged-products', [DamagedProductController::class, 'index']);
 Route::post('/damaged-products', [DamagedProductController::class, 'store']);
 Route::get('/damaged-products/stats', [DamagedProductController::class, 'stats']);
+Route::post('/damaged-products/{id}/refund', [DamagedProductController::class, 'refund']);
+Route::post('/inventory/deduct-from-damage', [DamagedProductController::class, 'deductFromInventory']);
 
 //Customers
 Route::prefix('customers')->group(function () {

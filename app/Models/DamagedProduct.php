@@ -16,5 +16,13 @@ class DamagedProduct extends Model
         'reason',
         'date',
         'unit_of_measurement',
+        'refunded',
+        'refunded_at',
+    ];
+
+    protected $casts = [
+        'refunded' => 'boolean',
+        'refunded_at' => 'datetime',
+        'date' => 'date',
     ];
 }

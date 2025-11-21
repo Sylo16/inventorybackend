@@ -12,7 +12,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'sku' => 'required|string|max:100|unique:products,sku',
+            'sku' => 'nullable|string|max:100|unique:products,sku',
             'unit_price' => 'required|numeric|min:0.01',
             'quantity' => 'required|integer|min:0',
             'unit_of_measurement' => 'required|string|max:100',
